@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hw"
-version = "0.1.0"
-description = ""
+version = "0.2.0"
+description = "Utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
 [tool.poetry.dependencies]
