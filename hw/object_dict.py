@@ -27,7 +27,7 @@ class ObjectDict(dict):
 
     def __init__(self, arg=sentinel):
         """
-        This method is only called after creation of a new ObjectDict
+        This method is only called after __new__ returns an ObjectDict
         instance. The __init__ method actually initialises the values
         in the underlying dict.
         """

@@ -48,6 +48,12 @@ def test_recursive_object_dict():
     assert od_1.very['much'] == 'smaller'
     assert type(od_1.very) is ObjectDict, f"Wrong type: {type(od_1.very)}"
 
+def test_absent_key_raises_correct_exception():
+    od_1 = ObjectDict({'very': {'much': 'smaller'}})
+    with pytest.raises(AttributeError):
+        _ = od_1.no_such_key
+    with pytest.raises(KeyError):
+        _ = od_1['no_such_key']
 
 if __name__ == '__main__':
     pytest.main()
