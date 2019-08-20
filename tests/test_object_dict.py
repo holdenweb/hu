@@ -1,6 +1,7 @@
 import pytest
 from hw.object_dict import ObjectDict
 
+
 def test_integer():
     # Verify integer pass-through
     value = 4567
@@ -18,12 +19,14 @@ def test_empty_list():
     assert type(value) is list
     assert value == []
 
+
 def test_lists():
     list_1 = [1, 2, 3]
     od = ObjectDict(list_1)
     assert od == list_1
     for i1, i2 in zip(list_1, od):
         assert i1 is i2
+
 
 def test_empty_object_dict():
     od_1 = ObjectDict({})
@@ -39,21 +42,24 @@ def test_object_dict():
     assert set(od_1.keys()) == {"top", "new_string"}
     od_1.new_list = [1, 2, {"key": "value"}]
     assert type(od_1.new_list[2]) == ObjectDict
-    assert od_1.new_list[2].key is od_1.new_list[2]['key']
+    assert od_1.new_list[2].key is od_1.new_list[2]["key"]
     assert od_1.new_list[2].key == "value"
     assert set(od_1.keys()) == {"top", "new_string", "new_list"}
 
+
 def test_recursive_object_dict():
-    od_1 = ObjectDict({'very': {'much': 'smaller'}})
-    assert od_1.very['much'] == 'smaller'
+    od_1 = ObjectDict({"very": {"much": "smaller"}})
+    assert od_1.very["much"] == "smaller"
     assert type(od_1.very) is ObjectDict, f"Wrong type: {type(od_1.very)}"
 
+
 def test_absent_key_raises_correct_exception():
-    od_1 = ObjectDict({'very': {'much': 'smaller'}})
+    od_1 = ObjectDict({"very": {"much": "smaller"}})
     with pytest.raises(AttributeError):
         _ = od_1.no_such_key
     with pytest.raises(KeyError):
-        _ = od_1['no_such_key']
+        _ = od_1["no_such_key"]
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     pytest.main()

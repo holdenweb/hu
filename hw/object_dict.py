@@ -2,6 +2,7 @@ class ObjectDict(dict):
     """
     Makes a dictionary behave like an object, with attribute-style access.
     """
+
     sentinel = object()  # Unique instance that cannot be passed as an argument
 
     def __new__(cls, arg=sentinel):
@@ -37,7 +38,6 @@ class ObjectDict(dict):
             arg = {}
         for (k, v) in arg.items():
             self[k] = ObjectDict(v)
-
 
     def __getattr__(self, name: str):
         try:
