@@ -28,6 +28,15 @@ def test_lists():
         assert i1 is i2
 
 
+def test_list_iteration():
+    od = ObjectDict({"key1": [{"key": "value0"}, {"key": "value1"}, {"key": "value2"}]})
+    assert (
+        [o.key for o in od.key1]
+        == [od.key1[i].key for i in range(3)]
+        == [f"value{i}" for i in range(3)]
+    )
+
+
 def test_empty_object_dict():
     od_1 = ObjectDict({})
     assert type(od_1) is ObjectDict
