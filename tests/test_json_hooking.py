@@ -1,6 +1,6 @@
 import json
 import pytest
-from hw.object_dict import ObjectDict
+from hw import ObjectDict
 
 
 def test_recursive_object_build():
