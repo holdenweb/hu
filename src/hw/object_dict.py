@@ -50,4 +50,4 @@ class ObjectDict(dict):
         super().__setitem__(name, value)
 
     def __dir__(self):
-        return sorted(self.keys)
+        return sorted(self.keys())
