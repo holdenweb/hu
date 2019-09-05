@@ -14,6 +14,12 @@ def test_string():
     assert ObjectDict(value) is value
 
 
+def test_nonetype():
+    # Verify None pass-through
+    value = None
+    assert ObjectDict(value) is value
+
+
 def test_empty_list():
     value = ObjectDict([])
     assert type(value) is list

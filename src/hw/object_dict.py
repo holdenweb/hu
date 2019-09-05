@@ -17,7 +17,7 @@ class ObjectDict(dict):
         """
         if arg is cls.sentinel:
             return super().__new__()
-        elif isinstance(arg, (int, float, str, ObjectDict)):
+        elif isinstance(arg, (int, float, str, ObjectDict)) or arg is None:
             return arg
         elif isinstance(arg, list):
             return list(ObjectDict(x) for x in arg)
