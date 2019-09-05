@@ -8,4 +8,6 @@ Transforms a dict to allow attribute access to keys that conform with Python syn
 for names. Names that conflict with built-in dict attributes must be accessed using
 subscripting as standard.
 
-    from hw.object_dict import ObjectDict
+    from hw import ObjectDict
+    od = ObjectDict({"a": [{"first": "result"}]})
+    assert od.a[0].first == "result"

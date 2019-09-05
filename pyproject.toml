@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hw"
-version = "0.3.0"
+version = "0.3.1"
 description = "Utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6 || ^3.7 || ^3.8"
 
 [tool.poetry.dev-dependencies]
 pytest = "^3.0"
