@@ -76,5 +76,10 @@ def test_absent_key_raises_correctly():
         _ = od_1["no_such_key"]
 
 
+def test_dir_method():
+    od_1 = ObjectDict(dict(a=1, b=2, c=3, d=4))
+    assert set(dir(od_1)) == set("abcd")
+
+
 if __name__ == "__main__":
     pytest.main()
