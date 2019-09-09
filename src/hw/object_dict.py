@@ -12,8 +12,8 @@ class ObjectDict(dict):
         Floats, ints, strings and existing ObjectDicts are simply
         returned. Lists are transformed into lists of ObjectDicts.
         The __init__ method will only be called for ObjectDicts,
-        since only then is the argument class is the same as the returned value.
-        When a dict is passed in, standard dict creation is called.
+        since only then is the argument class is the same as the returned
+        value.When a dict is passed in, standard dict creation is called.
         """
         if arg is cls.sentinel:
             return super().__new__()

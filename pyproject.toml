@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "hw"
 version = "0.4.0"
-description = "Utility software for open source programmers"
+description = "Helpful utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
 packages = [
