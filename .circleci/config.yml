@@ -49,5 +49,5 @@ jobs:
       - run:
           name: Run Pytest, report coverage
           command: |
-            poetry run coverage -m Pytest
+            poetry run coverage run -m Pytest
             poetry run coverage report --show-missing --include="src/hw/*"
