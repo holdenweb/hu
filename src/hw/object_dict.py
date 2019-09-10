@@ -16,7 +16,7 @@ class ObjectDict(dict):
         value.When a dict is passed in, standard dict creation is called.
         """
         if arg is cls.sentinel:
-            return super().__new__()
+            return super().__new__(cls)
         elif isinstance(arg, (int, float, str, ObjectDict)) or arg is None:
             return arg
         elif isinstance(arg, list):

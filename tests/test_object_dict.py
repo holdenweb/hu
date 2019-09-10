@@ -81,5 +81,14 @@ def test_dir_method():
     assert set(dir(od_1)) == set("abcd")
 
 
+def test_no_args():
+    assert dict(ObjectDict()) == {}
+
+
+def test_invalid_value():
+    with pytest.raises(ValueError):
+        ObjectDict(object())
+
+
 if __name__ == "__main__":
     pytest.main()

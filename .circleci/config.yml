@@ -48,8 +48,6 @@ jobs:
       # And send our coverage somewhere, in this case, coveralls
       - run:
           name: Run Pytest, report coverage
-          environment:
-            COVERALLS_REPO_TOKEN: C5Rpo7Glfw8saf3BLou6hTV6v3ULQhlRTokiY
           command: |
-            poetry run coverage run --omit="/home/circleci/.cache/pypoetry/virtualenvs" -m pytest
-            poetry run coveralls
+            poetry run coverage -m Pytest
+            poetry run coverage report -m --include="src/hw/*"
