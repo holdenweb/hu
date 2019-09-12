@@ -1,22 +1,13 @@
 import pytest
 from hw import ObjectDict
+from hw.object_dict import NoneType
 
 
-def test_integer():
-    # Verify integer pass-through
-    value = 4567
-    assert ObjectDict(value) is value
-
-
-def test_string():
-    # Verify string pass-through
-    value = "4567"
-    assert ObjectDict(value) is value
-
-
-def test_nonetype():
-    # Verify None pass-through
-    value = None
+@pytest.mark.parametrize(
+    "typename, value",
+    [("int", 42), ("float", 3.14159), ("string", "I'm a string"), ("NoneType", None)],
+)
+def test_passthrough(typename, value):
     assert ObjectDict(value) is value
 
 

@@ -1,3 +1,6 @@
+NoneType = type(None)
+
+
 class ObjectDict(dict):
     """
     Makes a dictionary behave like an object, with attribute-style access.
@@ -9,15 +12,16 @@ class ObjectDict(dict):
         """
         This recursive dict subclass converts a dict into an ObjectDict,
         which can use attribute access to retrieve and set keys.
-        Floats, ints, strings and existing ObjectDicts are simply
+        Floats, ints, strings, None and existing ObjectDicts are simply
         returned. Lists are transformed into lists of ObjectDicts.
         The __init__ method will only be called for ObjectDicts,
         since only then is the argument class is the same as the returned
-        value.When a dict is passed in, standard dict creation is called.
+        value. When a dict is passed in, object creation is delegated to
+        the superclass, and its contents are initialised in __init__.
         """
         if arg is cls.sentinel:
             return super().__new__(cls)
-        elif isinstance(arg, (int, float, str, ObjectDict)) or arg is None:
+        elif isinstance(arg, (int, float, str, ObjectDict, NoneType)):
             return arg
         elif isinstance(arg, list):
             return list(ObjectDict(x) for x in arg)
