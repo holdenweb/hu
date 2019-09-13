@@ -2,7 +2,7 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 #
-version: 2
+version: 2.0
 jobs:
   build:
     docker:
@@ -15,6 +15,7 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
 
     working_directory: ~/repo
+
 
     steps:
       - checkout
@@ -49,5 +50,4 @@ jobs:
       - run:
           name: Run Pytest, report coverage
           command: |
-            poetry run coverage run -m pytest -v
-            poetry run coverage report --show-missing --include="src/hw/*"
+            poetry run coverage run -m pytest -v --cov=src  --cov-report=term-missing
