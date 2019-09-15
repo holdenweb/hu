@@ -1,4 +1,4 @@
-POETRY=$$HOME/bin/poetry
+POETRY=poetry
 
 test:
 	$(POETRY) run pytest -v

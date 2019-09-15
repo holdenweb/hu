@@ -50,4 +50,4 @@ jobs:
       - run:
           name: Run Pytest, report coverage
           command: |
-            poetry run coverage run -m pytest -v --cov=src  --cov-report=term-missing
+            poetry run -m pytest -v --cov=src  --cov-report=term-missing

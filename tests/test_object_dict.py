@@ -1,6 +1,6 @@
 import pytest
-from hw import ObjectDict
-from hw.object_dict import NoneType
+from hu import ObjectDict
+from hu.object_dict import NoneType
 
 
 @pytest.mark.parametrize(
