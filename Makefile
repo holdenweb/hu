@@ -5,3 +5,6 @@ test:
 
 full_test:
 	$(POETRY) run tox
+
+local_ci:
+	circleci local execute
