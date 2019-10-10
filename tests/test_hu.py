@@ -1,5 +1,6 @@
-from hu import __version__, ObjectDict
 import toml
+from hu import __version__
+from hu import ObjectDict
 
 
 def test_version():
