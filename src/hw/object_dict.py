@@ -1,3 +1,5 @@
+import inspect
+
 NoneType = type(None)
 
 
@@ -25,7 +27,7 @@ class ObjectDict(dict):
             return arg
         elif isinstance(arg, list):
             return list(ObjectDict(x) for x in arg)
-        elif isinstance(arg, dict):
+        elif isinstance(arg, dict) or inspect.isgenerator(arg):
             return super().__new__(cls, arg)
         else:
             raise ValueError(f"{type(arg)} objects cannot be ObjectDicts")
@@ -40,7 +42,11 @@ class ObjectDict(dict):
             return  # Assume existing ObjectDicts do not need re-initialising
         if arg is self.sentinel:  # Called without args
             arg = {}
-        for (k, v) in arg.items():
+
+        # Allows the underlying dict class to handle the arg as it usually would
+        super(ObjectDict, self).__init__(arg)
+
+        for (k, v) in self.items():
             self[k] = ObjectDict(v)
 
     def __getattr__(self, name: str):

@@ -1,6 +1,5 @@
 import pytest
 from hw import ObjectDict
-from hw.object_dict import NoneType
 
 
 @pytest.mark.parametrize(
@@ -79,6 +78,21 @@ def test_no_args():
 def test_invalid_value():
     with pytest.raises(ValueError):
         ObjectDict(object())
+
+
+def test_generators():
+    mydict = {"a": "b", "c": "d"}
+    # This handles a generator in the same way a dict() does if it was passed
+    # a dict generator
+    od_1 = ObjectDict((k, v) for k, v in mydict.items())
+    assert od_1 == mydict
+
+    mylist = ["a", "b", "c", "d"]
+
+    with pytest.raises(ValueError):
+        # This errors in the same way as a dict() does if it was passed a list
+        # generator
+        ObjectDict(x for x in mylist)
 
 
 if __name__ == "__main__":
