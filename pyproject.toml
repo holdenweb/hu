@@ -1,11 +1,11 @@
 [tool.poetry]
-name = "hw"
+name = "hu"
 version = "0.4.0"
 description = "Helpful utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
 packages = [
-    { include = "hw", from = "src" },
+    { include = "hu", from = "src" },
 ]
 
 [tool.poetry.dependencies]

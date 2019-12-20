@@ -1,5 +1,7 @@
 import pytest
-from hw import ObjectDict
+from hu import ObjectDict
+
+NoneType = type(None)
 
 
 @pytest.mark.parametrize(
