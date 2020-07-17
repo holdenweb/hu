@@ -12,6 +12,7 @@ class ObjectDict(dict):
 
     def __new__(cls, arg=sentinel):
         """
+
         This recursive dict subclass converts a dict into an ObjectDict,
         which can use attribute access to retrieve and set keys.
         Floats, ints, strings, None and existing ObjectDicts are simply
