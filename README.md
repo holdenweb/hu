@@ -1,6 +1,7 @@
 # hu
 
-[![CircleCI](https://circleci.com/gh/holdenweb/hu.svg?style=svg) alt](https://circleci.com/gh/holdenweb/hu)
+[![CircleCI](https://circleci.com/gh/holdenweb/hu.svg?style=svg)](https://circleci.com/gh/holdenweb/hu "Build Status")
+
 Helpful utilities for open source developers
 
 ### hu.object_dict
