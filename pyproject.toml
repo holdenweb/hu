@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hu"
-version = "0.5.2"
+version = "0.0.0.post62.dev0+058b952"
 description = "Helpful utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
@@ -10,6 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.6 || ^3.7 || ^3.8"
+dunamai = "^1.3.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.17"

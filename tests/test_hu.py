@@ -1,4 +1,4 @@
-import toml
+import dunamai
 from hu import __version__
 from hu import ObjectDict
 
@@ -6,10 +6,7 @@ from hu import ObjectDict
 def test_version():
     "Ensure that hu reports the version set in pyproject.toml."
     # Should this test only be a pre-merge hook or similar?
-    with open("../pyproject.toml") as f:
-        # ``we now eat our own dogfood for the first time
-        pyproj = ObjectDict(toml.load(f))
-    assert __version__ == pyproj.tool.poetry.version
+    assert __version__ == str(dunamai.Version.from_git())
 
 
 def test_old_import():
