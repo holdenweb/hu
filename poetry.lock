@@ -58,7 +58,7 @@ python-versions = "*"
 version = "0.3.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Dynamic version generation"
 name = "dunamai"
 optional = false
@@ -330,7 +330,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "b531cc1f8069f4397c303c5e6d6b7c5c6a7d2069d02929cb12cfdc82801e57ca"
+content-hash = "4340e89e4d8e1b6b8dc391de8bf4049428a85be6da14136dee5dc9703f8a0a43"
 python-versions = "^3.6 || ^3.7 || ^3.8"
 
 [metadata.files]
