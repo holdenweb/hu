@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hu"
-version = "0.7.2"
+version = "4.0.0-pre.1"
 description = "Helpful utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
@@ -18,6 +18,7 @@ coverage = "^5.2"
 pytest = "^5.4"
 pytest-cov = "^2.10"
 dunamai = "^1.3.0"
+semver = "^2.10.2"
 
 [build-system]
 requires = ["poetry>=0.12", "setuptools", "wheel"]
