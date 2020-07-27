@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hu"
-version = "5.0.0-rc.1"
+version = "0.6.7"
 description = "Helpful utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
