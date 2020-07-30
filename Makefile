@@ -8,3 +8,6 @@ full_test:
 
 local_ci:
 	circleci local execute
+
+build:
+	python version.py
