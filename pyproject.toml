@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "hu"
-version = "0.5.2"
+version = "0.8.0"
 description = "Helpful utility software for open source programmers"
 authors = ["Steve Holden <steve@holdenweb.com>"]
 
@@ -12,11 +12,12 @@ packages = [
 python = "^3.6 || ^3.7 || ^3.8"
 
 [tool.poetry.dev-dependencies]
-tox = "^3.17"
+tox = "^3.18"
 flake8 = "^3.8"
 coverage = "^5.2"
-pytest = "^5.4"
+pytest = "^6.0"
 pytest-cov = "^2.10"
+dunamai = "^1.3.0"
 
 [build-system]
 requires = ["poetry>=0.12", "setuptools", "wheel"]

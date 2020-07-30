@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Run flake8
           command: |
-            poetry run flake8 .
+            poetry run flake8 --extend-exclude .env .
       # Last step, runs our tests ommiting the dependencies path (so we don't take their coverage into account)
       # And send our coverage somewhere, in this case, coveralls
       - run:

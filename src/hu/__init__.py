@@ -1,4 +1,3 @@
-__version__ = "0.5.2"
-
-from .object_dict import ObjectDict  # noqa
+from ._version import __version__
 from .dotted_dict import DottedDict  # noqa
+from .object_dict import ObjectDict  # noqa
