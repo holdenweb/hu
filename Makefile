@@ -10,4 +10,7 @@ local_ci:
 	circleci local execute
 
 build:
-	python version.py
+	python build.py
+
+flake8:
+	poetry run flake8 --extend-exclude .env .
