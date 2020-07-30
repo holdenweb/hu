@@ -19,6 +19,6 @@ RUN . /etc/os-release && \
     apt-get --purge autoremove -y gnupg && \
     rm -rf /var/cache/apt/lists
 RUN apt-get install -y curl && \
-    (curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python)
+    (curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3)
 # RUN rm /usr/bin/python /usr/bin/python-config && ln -s /usr/bin/python3.6 /usr/bin/python && ln -s /usr/bin/python3.6-config /usr/bin/python-config
 ENV PATH /root/.poetry/bin:${PATH}
