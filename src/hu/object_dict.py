@@ -50,6 +50,12 @@ class ObjectDict(dict):
         for (k, v) in self.items():
             self[k] = ObjectDict(v)
 
+    def __delattr__(self, name):
+        try:
+            del self[name]
+        except KeyError:
+            return AttributeError(repr(name))
+
     def __getattr__(self, name: str):
         try:
             return self[name]
