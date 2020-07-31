@@ -97,5 +97,31 @@ def test_generators():
         ObjectDict(x for x in mylist)
 
 
+def test_attribute_deletion():
+    mydict = {"a": {"b": {"c": 1}}}
+    od = ObjectDict(mydict)
+    del od.a.b.c
+    assert od == {"a": {"b": {}}}
+    del od.a.b
+    assert od == {"a": {}}
+    del od.a
+    assert od == {}
+
+
+def test_item_deletion():
+    #
+    # Verify simple name deletion
+    #
+    mydict = {"a": {"b": [0, 1, 2, 3]}}
+    od = ObjectDict(mydict)
+    del od.a.b[2]
+    assert od.a.b == [0, 1, 3]
+    #
+    # Verify we get an AttributeError deleting a non-existent name
+    #
+    with pytest.raises(AttributeError):
+        del od.a.b.nosuch
+
+
 if __name__ == "__main__":
     pytest.main()
