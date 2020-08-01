@@ -12,5 +12,6 @@ local_ci:
 build:
 	python build.py
 
-flake8:
-	poetry run flake8 --extend-exclude .env .
+style_check:
+	poetry run flake8 src && echo flake8 done
+	poetry run pycodestyle src && echo pycodestyle done
