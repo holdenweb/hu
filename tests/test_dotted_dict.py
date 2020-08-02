@@ -45,6 +45,14 @@ def test_exceptions(dd):
         ]
 
 
+def test_deletion(dd):
+    del dd["first.second[2].third"]
+    assert dd["first.second"] == [{}, {}, {}]
+    dd["first.second"] = [0, 1, 2]
+    del dd["first.second[2]"]
+    assert dd["first.second"] == [0, 1]
+
+
 def test_name_patterns(dd):
     for name in "_", "_12":
         assert list(dd._fragments(name)) == [name]

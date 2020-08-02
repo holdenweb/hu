@@ -29,8 +29,24 @@ class DottedDict:
     """
 
     def __init__(self, d):  # start with a mapping
-        """Initialise the internal dictionary."""
+        """
+        Initialise the internal dictionary with a mapping.
+        Question: could top-level components be any JSON value?
+        """
         self._d = d
+
+    def _apply_key(self, o, k):
+        try:
+            return o[k]
+        except ValueError:
+            raise KeyError("Non-integer list subscript")
+        except IndexError:
+            raise KeyError('Invalid list index at end of "{}"'.format(k[: self.pos]))
+        except KeyError:
+            raise KeyError(
+                'Unrecognised field name at end of "{}"'.format(k[: self.pos])
+            )
+        return o
 
     def __getitem__(self, key):
         """
@@ -41,22 +57,7 @@ class DottedDict:
         """
         o = self._d
         for k in self._fragments(key):
-            try:
-                o = o[k]
-            except ValueError:
-                raise KeyError(
-                    'Non-integer value for list subscript at end of "{}"'.format(
-                        key[: self.pos]
-                    )
-                )
-            except IndexError:
-                raise KeyError(
-                    'Invalid list index at end of "{}"'.format(key[: self.pos])
-                )
-            except KeyError:
-                raise KeyError(
-                    'Unrecognised field name at end of "{}"'.format(key[: self.pos])
-                )
+            o = self._apply_key(o, k)
         return o
 
     def __setitem__(self, key, value):
@@ -75,9 +76,21 @@ class DottedDict:
             k = nk
         v[k] = value
 
+    def __delitem__(self, key):
+        """
+        Delete the element indicated by the key string.
+        """
+        v = self._d
+        fs = self._fragments(key)
+        k = next(fs)
+        for nk in fs:
+            v = v[k]
+            k = nk
+        del v[nk]
+
     def _fragments(self, key):
         """
-        Split the key into its components, yielding
+        Yield a sequence of key components:
         a string for attribute references and an
         integer for bracketed references.
         """
@@ -87,7 +100,7 @@ class DottedDict:
             mo = pat.match(key, self.pos)
             if mo is None:
                 raise KeyError(
-                    'Cannot find name or list subscript at start of "{}'.format(
+                    "Cannot find name or list subscript at start of {!r}".format(
                         key[self.pos :]
                     )
                 )
