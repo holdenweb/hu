@@ -25,6 +25,7 @@ if rv.prerelease:
     stage = tuple(rv.prerelease.split("."))
 else:
     stage = None
+release_tag = f"v{rv}"
 
 #
 # Get tag-based version from git
@@ -38,22 +39,22 @@ dirty = g_version.endswith("-dirty")
 if dirty:
     sys.exit("Cannot build: please commit all changes before building.")
 tag, commits, ghex = g_version.rsplit("-", 2)
-gv = semver.VersionInfo.parse(tag[1:])  # I am no longer sure why this needs to be done
+gv = semver.VersionInfo.parse(tag[1:])
 
 if gv >= rv:
-    sys.exit("Release {} does not move forward from {}".format(rv, gv))
+    sys.exit("Release version {} does not move forward from {}".format(rv, gv))
 
 with open(f"src/{name}/_version.py", "w") as v_file:
     v_file.write(
         f"""\
 #
 # Created automatically when registering a new version
-# Edits made here will be lost.
+# Edits made here will be lost when build.py is re-run.
 #
 __version__ = "{rv}"
 """
     )
-
 run_cmd(f"git add src/{name}/_version.py".split())
-run_cmd(["git", "commit", "-m", f"Auto-build of v{rv}"])
-run_cmd(["git", "tag", f"v{rv}"])
+run_cmd("poetry build".split())
+run_cmd(["git", "commit", "-m", f"Auto-build of {release_tag}"])
+run_cmd(["git", "tag", release_tag])
