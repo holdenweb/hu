@@ -1,6 +1,7 @@
 # hu
 
 [![CircleCI](https://circleci.com/gh/holdenweb/hu.svg?style=svg)](https://circleci.com/gh/holdenweb/hu "Build Status")
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=holdenweb/hu)](https://dependabot.com)
 
 Helpful utilities for open source developers
 
