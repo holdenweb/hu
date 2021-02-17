@@ -235,7 +235,7 @@ python-versions = "*"
 
 [[package]]
 name = "tox"
-version = "3.21.4"
+version = "3.22.0"
 description = "tox is a generic virtualenv management and test command line tool"
 category = "dev"
 optional = false
@@ -291,7 +291,7 @@ testing = ["pytest (>=3.5,!=3.7.3)", "pytest-checkdocs (>=1.2.3)", "pytest-flake
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6 || ^3.7 || ^3.8"
-content-hash = "7e7d3a55f608daf7505bfaeec6dd6cd0223c91957a51ec43a9e87563f349e1c6"
+content-hash = "80d43660a5caa14e1c1cf487adbaf3691c0b806d7fa7d23cb4390b98f7ce3574"
 
 [metadata.files]
 appdirs = [
@@ -430,8 +430,8 @@ toml = [
     {file = "toml-0.10.1.tar.gz", hash = "sha256:926b612be1e5ce0634a2ca03470f95169cf16f939018233a670519cb4ac58b0f"},
 ]
 tox = [
-    {file = "tox-3.21.4-py2.py3-none-any.whl", hash = "sha256:65d0e90ceb816638a50d64f4b47b11da767b284c0addda2294cb3cd69bd72425"},
-    {file = "tox-3.21.4.tar.gz", hash = "sha256:cf7fef81a3a2434df4d7af2a6d1bf606d2970220addfbe7dea2615bd4bb2c252"},
+    {file = "tox-3.22.0-py2.py3-none-any.whl", hash = "sha256:89afa9c59c04beb55eda789c7a65feb1a70fde117f85f1bd1c27c66758456e60"},
+    {file = "tox-3.22.0.tar.gz", hash = "sha256:ed1e650cf6368bcbc4a071eeeba363c480920e0ed8a9ad1793c7caaa5ad33d49"},
 ]
 virtualenv = [
     {file = "virtualenv-20.0.34-py2.py3-none-any.whl", hash = "sha256:4ecd607e7809bd7384039065639a8babc9fa562fe1b73b24095ce85b83d55fcf"},
