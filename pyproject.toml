@@ -14,7 +14,7 @@ python = "^3.6 || ^3.7 || ^3.8"
 [tool.poetry.dev-dependencies]
 tox = "^3.22"
 flake8 = "^3.9.1"
-coverage = "^5.5"
+coverage = "^6.0"
 pytest = "^6.2"
 pytest-cov = "^2.12"
 
