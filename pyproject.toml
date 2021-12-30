@@ -12,7 +12,7 @@ packages = [
 python = "^3.6 || ^3.7 || ^3.8"
 
 [tool.poetry.dev-dependencies]
-tox = "^3.22"
+tox = "^3.24"
 flake8 = "^3.9.1"
 coverage = "^5.5"
 pytest = "^6.2"
