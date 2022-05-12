@@ -97,11 +97,15 @@ class KeySpecParser:
     def _next_token_match(self, key):
         pattern_match = self.current_pattern.match(key, self.current_position)
         self._raise_error_if_syntax_error(key, pattern_match)
-        string, integer = pattern_match.groups()
         self.current_position = pattern_match.end()
         self.current_pattern = KeySpecParser.TAIL_PATTERN
-        token = string if string else int(integer)
-        return token
+        return self._convert_to_token(pattern_match)
+
+    def _convert_to_token(self, pattern_match):
+        string, integer = pattern_match.groups()
+        if string:
+            return string
+        return int(integer)
 
     def _raise_error_if_syntax_error(self, key, match):
         if match is None:
