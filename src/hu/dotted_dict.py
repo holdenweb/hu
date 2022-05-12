@@ -28,7 +28,7 @@ class DottedDict:
     should be the string 'bingo'.
     """
 
-    def __init__(self, d):  # start with a mapping
+    def __init__(self, d):
         """
         Initialise the internal dictionary with a mapping.
         Question: could top-level components be any JSON value?
