@@ -102,8 +102,8 @@ class KeySpecParser:
         self._raise_error_if_syntax_error(current_position, key, pattern_match)
         return pattern_match
 
-    def _raise_error_if_syntax_error(self, current_position, key, mo):
-        if mo is None:
+    def _raise_error_if_syntax_error(self, current_position, key, match):
+        if match is None:
             raise KeyError(
                 "Cannot find name or list subscript at start of {!r}".format(
                     key[current_position:]
