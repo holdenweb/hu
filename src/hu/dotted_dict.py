@@ -82,11 +82,11 @@ class DottedDict:
 
 
 class KeySpecParser:
-    first_pat = re.compile(rf"{name_pat}|{subs_pat}")
+    START_PATTERN = re.compile(rf"{name_pat}|{subs_pat}")
 
     def parse(self, key):
         self.current_position, end = 0, len(key)
-        current_pattern = KeySpecParser.first_pat
+        current_pattern = KeySpecParser.START_PATTERN
         while self.current_position < end:
             mo = current_pattern.match(key, self.current_position)
             if mo is None:
