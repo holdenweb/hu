@@ -32,14 +32,7 @@ def test_fragments(dd):
 
 def test_exceptions(dd):
     with pytest.raises(KeyError):
-        list(dd._fragments("ab.cd[2][banana].ef.ij")) == [
-            "ab",
-            "cd",
-            2,
-            "banana",
-            "ef",
-            "ij",
-        ]
+        list(dd._fragments("ab.cd[2][banana].ef.ij"))
 
 
 def test_deletion(dd):
