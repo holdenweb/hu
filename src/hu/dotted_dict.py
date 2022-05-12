@@ -92,7 +92,6 @@ class KeySpecParser:
                 yield self.current_position, string
             else:
                 yield self.current_position, int(integer)
-            self.current_pattern = KeySpecParser.TAIL_PATTERN
 
     def _initialise_parser(self):
         self.current_position = 0
@@ -103,6 +102,7 @@ class KeySpecParser:
         self._raise_error_if_syntax_error(self.current_position, key, pattern_match)
         string, integer = pattern_match.groups()
         self.current_position = pattern_match.end()
+        self.current_pattern = KeySpecParser.TAIL_PATTERN
         return string, integer
 
     def _raise_error_if_syntax_error(self, current_position, key, match):
