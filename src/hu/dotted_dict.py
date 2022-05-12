@@ -99,16 +99,16 @@ class KeySpecParser:
 
     def _next_token_match(self, key):
         pattern_match = self.current_pattern.match(key, self.current_position)
-        self._raise_error_if_syntax_error(self.current_position, key, pattern_match)
+        self._raise_error_if_syntax_error(key, pattern_match)
         string, integer = pattern_match.groups()
         self.current_position = pattern_match.end()
         self.current_pattern = KeySpecParser.TAIL_PATTERN
         return string, integer
 
-    def _raise_error_if_syntax_error(self, current_position, key, match):
+    def _raise_error_if_syntax_error(self, key, match):
         if match is None:
             raise KeyError(
                 "Cannot find name or list subscript at start of {!r}".format(
-                    key[current_position:]
+                    key[self.current_position:]
                 )
             )
