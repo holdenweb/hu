@@ -65,7 +65,7 @@ class DottedDict:
 
     def __delitem__(self, key):
         """
-        Delete the element indicated by the key string.
+        Delete the nested element located at the path key.
         """
         v = self._d
         fs = self._fragments(key)
