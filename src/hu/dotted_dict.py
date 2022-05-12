@@ -87,10 +87,7 @@ class KeySpecParser:
         current_position, end = 0, len(key)
         current_pattern = KeySpecParser.HEAD_PATTERN
         while current_position < end:
-            match = self._next_token_match(current_pattern, current_position, key)
-
-            string, integer = match.groups()
-            current_position = match.end()
+            string, integer, current_position = self._next_token_match(current_pattern, current_position, key)
             if string:
                 yield current_position, string
             else:
@@ -100,7 +97,9 @@ class KeySpecParser:
     def _next_token_match(self, current_pattern, current_position, key):
         pattern_match = current_pattern.match(key, current_position)
         self._raise_error_if_syntax_error(current_position, key, pattern_match)
-        return pattern_match
+        string, integer = pattern_match.groups()
+        current_position = pattern_match.end()
+        return string, integer, current_position
 
     def _raise_error_if_syntax_error(self, current_position, key, match):
         if match is None:
