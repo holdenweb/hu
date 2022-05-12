@@ -1,4 +1,3 @@
-from hu import __version__
 from hu import ObjectDict
 
 

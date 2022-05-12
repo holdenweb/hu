@@ -1,9 +1,6 @@
 import pytest
+
 from hu import DottedDict
-from hu.dotted_dict import first_pat
-from hu.dotted_dict import name_pat
-from hu.dotted_dict import rest_pat
-from hu.dotted_dict import subs_pat
 
 
 @pytest.fixture
@@ -22,8 +19,8 @@ def test_subscripts(dd):
 
 
 def test_fragments(dd):
-    assert list(dd._fragments("ab.cd[2][-1].ef.ij")) == ["ab", "cd", 2, -1, "ef", "ij"]
-    assert list(dd._fragments("ab.cd[2].banana.ef.ij")) == [
+    assert list(dd._parse_path_key_spec("ab.cd[2][-1].ef.ij")) == ["ab", "cd", 2, -1, "ef", "ij"]
+    assert list(dd._parse_path_key_spec("ab.cd[2].banana.ef.ij")) == [
         "ab",
         "cd",
         2,
@@ -35,14 +32,7 @@ def test_fragments(dd):
 
 def test_exceptions(dd):
     with pytest.raises(KeyError):
-        list(dd._fragments("ab.cd[2][banana].ef.ij")) == [
-            "ab",
-            "cd",
-            2,
-            "banana",
-            "ef",
-            "ij",
-        ]
+        list(dd._parse_path_key_spec("ab.cd[2][banana].ef.ij"))
 
 
 def test_deletion(dd):
@@ -53,6 +43,12 @@ def test_deletion(dd):
     assert dd["first.second"] == [0, 1]
 
 
+def test_does_not_recursively_create_missing_structures():
+    dd = DottedDict({"first": {"second": [{}, {}, {"third": "bingo"}]}})
+    with pytest.raises(KeyError):
+        dd['missing.element'] = None
+
+
 def test_name_patterns(dd):
     for name in "_", "_12":
-        assert list(dd._fragments(name)) == [name]
+        assert list(dd._parse_path_key_spec(name)) == [name]

@@ -1,14 +1,4 @@
-"""
-Support single string subscripts allowing specification of
-full path through a dict/list structure
-"""
 import re
-from contextlib import contextmanager
-
-name_pat = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
-subs_pat = r"\[(?P<index>-?\d*)\]"
-first_pat = re.compile(rf"{name_pat}|{subs_pat}")
-rest_pat = re.compile(rf"\.{name_pat}|{subs_pat}")
 
 
 class DottedDict:
@@ -28,11 +18,7 @@ class DottedDict:
     should be the string 'bingo'.
     """
 
-    def __init__(self, d):  # start with a mapping
-        """
-        Initialise the internal dictionary with a mapping.
-        Question: could top-level components be any JSON value?
-        """
+    def __init__(self, d):
         self._d = d
 
     def _apply_key(self, o, k):
@@ -46,30 +32,26 @@ class DottedDict:
             raise KeyError(
                 'Unrecognised field name at end of "{}"'.format(k[: self.pos])
             )
-        return o
 
     def __getitem__(self, key):
         """
-        Return the element obtained by splitting the
-        string key into strings and integers starting
-        at the root of the dict (so the first element
-        of the key must be a name).
+        Returns the result of walking into the nested
+        data structure using key as path specifier.
         """
         o = self._d
-        for k in self._fragments(key):
+        for k in self._parse_path_key_spec(key):
             o = self._apply_key(o, k)
         return o
 
     def __setitem__(self, key, value):
         """
-        Set the element indicated by the key string
-        to the given value.
-        At present (and possibly for ever) we are
-        unconcerned about the current value of the key.
+        Set the nested element located at the specified path key
+
         Currently handles only dicts.
+        Does not recursively create missing structures
         """
         v = self._d
-        fs = self._fragments(key)
+        fs = self._parse_path_key_spec(key)
         k = next(fs)
         for nk in fs:
             v = v[k]
@@ -78,36 +60,57 @@ class DottedDict:
 
     def __delitem__(self, key):
         """
-        Delete the element indicated by the key string.
+        Delete the nested element located at the path key.
         """
         v = self._d
-        fs = self._fragments(key)
+        fs = self._parse_path_key_spec(key)
         k = next(fs)
         for nk in fs:
             v = v[k]
             k = nk
         del v[nk]
 
-    def _fragments(self, key):
-        """
-        Yield a sequence of key components:
-        a string for attribute references and an
-        integer for bracketed references.
-        """
-        self.pos, end = 0, len(key)
-        pat = first_pat
-        while self.pos < end:
-            mo = pat.match(key, self.pos)
-            if mo is None:
-                raise KeyError(
-                    "Cannot find name or list subscript at start of {!r}".format(
-                        key[self.pos :]
-                    )
+    def _parse_path_key_spec(self, key):
+        parser = KeySpecParser()
+        for position, fragment in parser.parse(key):
+            self.pos = position
+            yield fragment
+
+
+class KeySpecParser:
+    IDENTIFIER_PATTERN = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
+    SUBSCRIPT_PATTERN = r"\[(?P<index>-?\d*)\]"
+    HEAD_PATTERN = re.compile(rf"{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
+    TAIL_PATTERN = re.compile(rf"\.{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
+
+    def parse(self, key):
+        self._initialise_parser()
+        end = len(key)
+        while self.current_position < end:
+            token = self._next_token_match(key)
+            yield self.current_position, token
+
+    def _initialise_parser(self):
+        self.current_position = 0
+        self.current_pattern = KeySpecParser.HEAD_PATTERN
+
+    def _next_token_match(self, key):
+        pattern_match = self.current_pattern.match(key, self.current_position)
+        self._raise_error_if_syntax_error(key, pattern_match)
+        self.current_position = pattern_match.end()
+        self.current_pattern = KeySpecParser.TAIL_PATTERN
+        return self._convert_to_token(pattern_match)
+
+    def _convert_to_token(self, pattern_match):
+        string, integer = pattern_match.groups()
+        if string:
+            return string
+        return int(integer)
+
+    def _raise_error_if_syntax_error(self, key, match):
+        if match is None:
+            raise KeyError(
+                "Cannot find name or list subscript at start of {!r}".format(
+                    key[self.current_position:]
                 )
-            s, i = mo.groups()
-            self.pos = mo.end()
-            if s:
-                yield s
-            else:
-                yield int(i)
-            pat = rest_pat
+            )
