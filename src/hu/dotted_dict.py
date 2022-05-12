@@ -76,6 +76,17 @@ class DottedDict:
         del v[nk]
 
     def _parse_path_key_spec(self, key):
+        parser = KeySpecParser()
+        for fragment in parser.parse(key):
+            self.pos = parser.pos
+            yield fragment
+
+
+class KeySpecParser:
+    def __init__(self):
+        self.pos = None
+
+    def parse(self, key):
         self.pos, end = 0, len(key)
         pat = first_pat
         while self.pos < end:
