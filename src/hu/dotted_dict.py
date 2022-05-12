@@ -87,17 +87,20 @@ class KeySpecParser:
         current_position, end = 0, len(key)
         current_pattern = KeySpecParser.HEAD_PATTERN
         while current_position < end:
-            mo = current_pattern.match(key, current_position)
-            if mo is None:
-                raise KeyError(
-                    "Cannot find name or list subscript at start of {!r}".format(
-                        key[current_position:]
-                    )
-                )
-            s, i = mo.groups()
-            current_position = mo.end()
+            match = current_pattern.match(key, current_position)
+            self._raise_error_if_syntax_error(current_position, key, match)
+            s, i = match.groups()
+            current_position = match.end()
             if s:
                 yield current_position, s
             else:
                 yield current_position, int(i)
             current_pattern = KeySpecParser.TAIL_PATTERN
+
+    def _raise_error_if_syntax_error(self, current_position, key, mo):
+        if mo is None:
+            raise KeyError(
+                "Cannot find name or list subscript at start of {!r}".format(
+                    key[current_position:]
+                )
+            )
