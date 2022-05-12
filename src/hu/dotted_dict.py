@@ -88,10 +88,12 @@ class KeySpecParser:
         end = len(key)
         while self.current_position < end:
             string, integer = self._next_token_match(key)
+
+            token = string if string else int(integer)
             if string:
-                yield self.current_position, string
+                yield self.current_position, token
             else:
-                yield self.current_position, int(integer)
+                yield self.current_position, token
 
     def _initialise_parser(self):
         self.current_position = 0
