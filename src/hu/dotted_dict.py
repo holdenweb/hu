@@ -89,12 +89,12 @@ class KeySpecParser:
         while current_position < end:
             match = self._next_token_match(current_pattern, current_position, key)
             self._raise_error_if_syntax_error(current_position, key, match)
-            s, i = match.groups()
+            string, integer = match.groups()
             current_position = match.end()
-            if s:
-                yield current_position, s
+            if string:
+                yield current_position, string
             else:
-                yield current_position, int(i)
+                yield current_position, int(integer)
             current_pattern = KeySpecParser.TAIL_PATTERN
 
     def _next_token_match(self, current_pattern, current_position, key):
