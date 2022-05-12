@@ -83,9 +83,6 @@ class DottedDict:
 
 
 class KeySpecParser:
-    def __init__(self):
-        self.pos = None
-
     def parse(self, key):
         self.pos, end = 0, len(key)
         pat = first_pat
