@@ -72,8 +72,8 @@ class DottedDict:
 
     def _parse_path_key_spec(self, key):
         parser = KeySpecParser()
-        for fragment in parser.parse(key):
-            self.pos = parser.current_position
+        for position, fragment in parser.parse(key):
+            self.pos = position
             yield fragment
 
 
@@ -97,7 +97,7 @@ class KeySpecParser:
             s, i = mo.groups()
             self.current_position = mo.end()
             if s:
-                yield s
+                yield self.current_position, s
             else:
-                yield int(i)
+                yield self.current_position, int(i)
             current_pattern = KeySpecParser.TAIL_PATTERN
