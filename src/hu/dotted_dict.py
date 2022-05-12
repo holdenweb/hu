@@ -78,10 +78,10 @@ class DottedDict:
 
 
 class KeySpecParser:
-    name_pat = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
-    subs_pat = r"\[(?P<index>-?\d*)\]"
-    HEAD_PATTERN = re.compile(rf"{name_pat}|{subs_pat}")
-    TAIL_PATTERN = re.compile(rf"\.{name_pat}|{subs_pat}")
+    IDENTIFIER_PATTERN = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
+    SUBSCRIPT_PATTERN = r"\[(?P<index>-?\d*)\]"
+    HEAD_PATTERN = re.compile(rf"{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
+    TAIL_PATTERN = re.compile(rf"\.{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
 
     def parse(self, key):
         self.current_position, end = 0, len(key)
