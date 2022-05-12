@@ -78,24 +78,24 @@ class DottedDict:
     def _parse_path_key_spec(self, key):
         parser = KeySpecParser()
         for fragment in parser.parse(key):
-            self.pos = parser.pos
+            self.pos = parser.current_position
             yield fragment
 
 
 class KeySpecParser:
     def parse(self, key):
-        self.pos, end = 0, len(key)
+        self.current_position, end = 0, len(key)
         pat = first_pat
-        while self.pos < end:
-            mo = pat.match(key, self.pos)
+        while self.current_position < end:
+            mo = pat.match(key, self.current_position)
             if mo is None:
                 raise KeyError(
                     "Cannot find name or list subscript at start of {!r}".format(
-                        key[self.pos :]
+                        key[self.current_position:]
                     )
                 )
             s, i = mo.groups()
-            self.pos = mo.end()
+            self.current_position = mo.end()
             if s:
                 yield s
             else:
