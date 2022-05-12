@@ -76,11 +76,6 @@ class DottedDict:
         del v[nk]
 
     def _parse_path_key_spec(self, key):
-        """
-        Yield a sequence of key components:
-        a string for attribute references and an
-        integer for bracketed references.
-        """
         self.pos, end = 0, len(key)
         pat = first_pat
         while self.pos < end:
