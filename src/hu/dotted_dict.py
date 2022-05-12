@@ -81,7 +81,7 @@ class KeySpecParser:
     name_pat = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
     subs_pat = r"\[(?P<index>-?\d*)\]"
     START_PATTERN = re.compile(rf"{name_pat}|{subs_pat}")
-    rest_pat = re.compile(rf"\.{name_pat}|{subs_pat}")
+    TAIL_PATTERN = re.compile(rf"\.{name_pat}|{subs_pat}")
 
     def parse(self, key):
         self.current_position, end = 0, len(key)
@@ -100,4 +100,4 @@ class KeySpecParser:
                 yield s
             else:
                 yield int(i)
-            current_pattern = KeySpecParser.rest_pat
+            current_pattern = KeySpecParser.TAIL_PATTERN
