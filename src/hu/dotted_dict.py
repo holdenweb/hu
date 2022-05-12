@@ -84,20 +84,20 @@ class KeySpecParser:
     TAIL_PATTERN = re.compile(rf"\.{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
 
     def parse(self, key):
-        self.current_position, end = 0, len(key)
+        current_position, end = 0, len(key)
         current_pattern = KeySpecParser.HEAD_PATTERN
-        while self.current_position < end:
-            mo = current_pattern.match(key, self.current_position)
+        while current_position < end:
+            mo = current_pattern.match(key, current_position)
             if mo is None:
                 raise KeyError(
                     "Cannot find name or list subscript at start of {!r}".format(
-                        key[self.current_position:]
+                        key[current_position:]
                     )
                 )
             s, i = mo.groups()
-            self.current_position = mo.end()
+            current_position = mo.end()
             if s:
-                yield self.current_position, s
+                yield current_position, s
             else:
-                yield self.current_position, int(i)
+                yield current_position, int(i)
             current_pattern = KeySpecParser.TAIL_PATTERN
