@@ -46,7 +46,6 @@ class DottedDict:
             raise KeyError(
                 'Unrecognised field name at end of "{}"'.format(k[: self.pos])
             )
-        return o
 
     def __getitem__(self, key):
         """
