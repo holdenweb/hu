@@ -85,9 +85,9 @@ class DottedDict:
 class KeySpecParser:
     def parse(self, key):
         self.current_position, end = 0, len(key)
-        pat = first_pat
+        current_pattern = first_pat
         while self.current_position < end:
-            mo = pat.match(key, self.current_position)
+            mo = current_pattern.match(key, self.current_position)
             if mo is None:
                 raise KeyError(
                     "Cannot find name or list subscript at start of {!r}".format(
@@ -100,4 +100,4 @@ class KeySpecParser:
                 yield s
             else:
                 yield int(i)
-            pat = rest_pat
+            current_pattern = rest_pat
