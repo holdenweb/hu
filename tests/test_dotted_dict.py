@@ -19,8 +19,8 @@ def test_subscripts(dd):
 
 
 def test_fragments(dd):
-    assert list(dd._fragments("ab.cd[2][-1].ef.ij")) == ["ab", "cd", 2, -1, "ef", "ij"]
-    assert list(dd._fragments("ab.cd[2].banana.ef.ij")) == [
+    assert list(dd._parse_path_key_spec("ab.cd[2][-1].ef.ij")) == ["ab", "cd", 2, -1, "ef", "ij"]
+    assert list(dd._parse_path_key_spec("ab.cd[2].banana.ef.ij")) == [
         "ab",
         "cd",
         2,
@@ -32,7 +32,7 @@ def test_fragments(dd):
 
 def test_exceptions(dd):
     with pytest.raises(KeyError):
-        list(dd._fragments("ab.cd[2][banana].ef.ij"))
+        list(dd._parse_path_key_spec("ab.cd[2][banana].ef.ij"))
 
 
 def test_deletion(dd):
@@ -51,4 +51,4 @@ def test_does_not_recursively_create_missing_structures():
 
 def test_name_patterns(dd):
     for name in "_", "_12":
-        assert list(dd._fragments(name)) == [name]
+        assert list(dd._parse_path_key_spec(name)) == [name]

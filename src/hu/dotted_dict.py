@@ -44,7 +44,7 @@ class DottedDict:
         data structure using key as path specifier.
         """
         o = self._d
-        for k in self._fragments(key):
+        for k in self._parse_path_key_spec(key):
             o = self._apply_key(o, k)
         return o
 
@@ -56,7 +56,7 @@ class DottedDict:
         Does not recursively create missing structures
         """
         v = self._d
-        fs = self._fragments(key)
+        fs = self._parse_path_key_spec(key)
         k = next(fs)
         for nk in fs:
             v = v[k]
@@ -68,14 +68,14 @@ class DottedDict:
         Delete the nested element located at the path key.
         """
         v = self._d
-        fs = self._fragments(key)
+        fs = self._parse_path_key_spec(key)
         k = next(fs)
         for nk in fs:
             v = v[k]
             k = nk
         del v[nk]
 
-    def _fragments(self, key):
+    def _parse_path_key_spec(self, key):
         """
         Yield a sequence of key components:
         a string for attribute references and an
