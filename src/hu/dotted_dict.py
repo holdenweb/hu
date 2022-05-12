@@ -40,10 +40,8 @@ class DottedDict:
 
     def __getitem__(self, key):
         """
-        Return the element obtained by splitting the
-        string key into strings and integers starting
-        at the root of the dict (so the first element
-        of the key must be a name).
+        Returns the result of walking into the nested
+        data structure using key as path specifier.
         """
         o = self._d
         for k in self._fragments(key):
@@ -52,11 +50,10 @@ class DottedDict:
 
     def __setitem__(self, key, value):
         """
-        Set the element indicated by the key string
-        to the given value.
-        At present (and possibly for ever) we are
-        unconcerned about the current value of the key.
+        Set the nested element located at the specified path key
+
         Currently handles only dicts.
+        Does not recursively create missing structures
         """
         v = self._d
         fs = self._fragments(key)
