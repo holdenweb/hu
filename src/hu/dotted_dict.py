@@ -1,9 +1,4 @@
-"""
-Support single string subscripts allowing specification of
-full path through a dict/list structure
-"""
 import re
-from contextlib import contextmanager
 
 name_pat = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
 subs_pat = r"\[(?P<index>-?\d*)\]"
@@ -29,10 +24,6 @@ class DottedDict:
     """
 
     def __init__(self, d):
-        """
-        Initialise the internal dictionary with a mapping.
-        Question: could top-level components be any JSON value?
-        """
         self._d = d
 
     def _apply_key(self, o, k):
