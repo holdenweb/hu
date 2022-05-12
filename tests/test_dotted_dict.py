@@ -1,9 +1,6 @@
 import pytest
+
 from hu import DottedDict
-from hu.dotted_dict import first_pat
-from hu.dotted_dict import name_pat
-from hu.dotted_dict import rest_pat
-from hu.dotted_dict import subs_pat
 
 
 @pytest.fixture
