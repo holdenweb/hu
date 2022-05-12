@@ -43,6 +43,12 @@ def test_deletion(dd):
     assert dd["first.second"] == [0, 1]
 
 
+def test_does_not_recursively_create_missing_structures():
+    dd = DottedDict({"first": {"second": [{}, {}, {"third": "bingo"}]}})
+    with pytest.raises(KeyError):
+        dd['missing.element'] = None
+
+
 def test_name_patterns(dd):
     for name in "_", "_12":
         assert list(dd._fragments(name)) == [name]
