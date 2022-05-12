@@ -84,22 +84,22 @@ class KeySpecParser:
     TAIL_PATTERN = re.compile(rf"\.{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
 
     def parse(self, key):
-        current_position, end = 0, len(key)
+        self.current_position, end = 0, len(key)
         current_pattern = KeySpecParser.HEAD_PATTERN
-        while current_position < end:
-            string, integer, current_position = self._next_token_match(current_pattern, current_position, key)
+        while self.current_position < end:
+            string, integer, self.current_position = self._next_token_match(current_pattern, self.current_position, key)
             if string:
-                yield current_position, string
+                yield self.current_position, string
             else:
-                yield current_position, int(integer)
+                yield self.current_position, int(integer)
             current_pattern = KeySpecParser.TAIL_PATTERN
 
     def _next_token_match(self, current_pattern, current_position, key):
-        pattern_match = current_pattern.match(key, current_position)
-        self._raise_error_if_syntax_error(current_position, key, pattern_match)
+        pattern_match = current_pattern.match(key, self.current_position)
+        self._raise_error_if_syntax_error(self.current_position, key, pattern_match)
         string, integer = pattern_match.groups()
-        current_position = pattern_match.end()
-        return string, integer, current_position
+        self.current_position = pattern_match.end()
+        return string, integer, self.current_position
 
     def _raise_error_if_syntax_error(self, current_position, key, match):
         if match is None:
