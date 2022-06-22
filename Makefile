@@ -6,7 +6,7 @@ test:
 	$(POETRY) run pytest -v
 
 full_test:
-	$(POETRY) run tox
+	tox -q
 
 local_ci:
 	circleci local execute
