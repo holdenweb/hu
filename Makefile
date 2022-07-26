@@ -12,7 +12,7 @@ local_ci:
 	circleci local execute
 
 build:
-	python build.py
+	python build_hu.py
 
 style_check:
 	poetry run flake8 src && echo flake8 done
