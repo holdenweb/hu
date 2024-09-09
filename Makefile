@@ -2,6 +2,9 @@ POETRY=poetry
 
 .PHONY: test full_test local_ci build style_check watch-test
 
+clean:
+	find src tests -name __pycache__ -exec rm -r {} \; -prune
+
 test:
 	$(POETRY) run pytest -v
 
