@@ -5,10 +5,18 @@ POETRY=poetry
 clean:
 	find src tests -name __pycache__ -exec rm -r {} \; -prune
 
+dist-test:
+	PROJECT_DIR=$$(pwd) ; \
+	DIR=$$(mktemp -d) ; \
+	cd $${DIR} && \
+	git clone $${PROJECT_DIR} && \
+	cd $(basename $${PROJECT_DIR}) && \
+	make test && \
+	rm -rf $${DIR}
 test:
 	$(POETRY) run pytest -v
 
-full_test:
+tox_test:
 	tox -q
 
 local_ci:
