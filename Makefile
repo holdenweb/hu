@@ -10,13 +10,13 @@ dist-test:
 	DIR=$$(mktemp -d) ; \
 	cd $${DIR} && \
 	git clone $${PROJECT_DIR} && \
-	cd $(basename $${PROJECT_DIR}) && \
-	make test && \
+	cd $$(basename $${PROJECT_DIR}) && \
+	(poetry env use 3.13 && poetry install && poetry run make test) && \
 	rm -rf $${DIR}
 test:
 	$(POETRY) run pytest -v
 
-tox_test:
+tox-test:
 	tox -q
 
 local_ci:

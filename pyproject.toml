@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7 || ^3.8 || ^3.9 || ^3.10"
+python = "^3.9 || ^3.10 || ^3.11 || ^3.12 || ^3.13"
 coverage = "^6.4.1"
 
 [tool.poetry.dev-dependencies]
@@ -19,8 +19,6 @@ coverage = "^6.2"
 pytest = "^7.0"
 pytest-cov = "^3.0"
 watchdog = "^2.1.7"
-
-[tool.poetry.group.dev.dependencies]
 ruff = "^0.8.3"
 
 [build-system]
