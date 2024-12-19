@@ -48,7 +48,7 @@ def test_object_dict():
     od_1.new_string = "3456"
     assert set(od_1.keys()) == {"top", "new_string"}
     od_1.new_list = [1, 2, {"key": "value"}]
-    assert type(od_1.new_list[2]) == ObjectDict
+    assert type(od_1.new_list[2]) is ObjectDict
     assert od_1.new_list[2].key is od_1.new_list[2]["key"]
     assert od_1.new_list[2].key == "value"
     assert set(od_1.keys()) == {"top", "new_string", "new_list"}
