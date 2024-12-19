@@ -28,4 +28,4 @@ jobs:
           poetry install
 
       - name: Run Ruff
-        run: ruff check --output-format=github
+        run: python -m ruff check --output-format=github
