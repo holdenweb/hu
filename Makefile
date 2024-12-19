@@ -19,9 +19,6 @@ test:
 tox-test:
 	tox -q
 
-local_ci:
-	circleci local execute
-
 build:
 	python build_hu.py
 

@@ -28,3 +28,5 @@ jobs:
           poetry install
       - name: Run Ruff
         run: poetry run ruff check --output-format=github
+      - name: Run tests under Python ${{ matrix.python-version }}
+        run: poetry run make test
