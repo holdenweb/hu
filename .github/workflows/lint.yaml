@@ -1,4 +1,4 @@
-name: Lint Python Code
+name: Lint and Test Python Code
 
 on:
   pull_request:
@@ -27,6 +27,6 @@ jobs:
           python -m pip install --upgrade pip poetry
           poetry install
       - name: Run Ruff
-        run: poetry run ruff check --output-format=github
+        run: poetry run ruff check --output-format=github && poetry run pycodestyle src
       - name: Run tests under Python ${{ matrix.python-version }}
         run: poetry run make test
