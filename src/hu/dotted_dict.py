@@ -27,7 +27,7 @@ class DottedDict:
         except ValueError:
             raise KeyError("Non-integer list subscript")
         except IndexError:
-            raise KeyError('Invalid list index at end of "{}"'.format(k[: self.pos]))
+            raise KeyError(f'Invalid list index at end of "{k[: self.pos]}"')
         except KeyError:
             raise KeyError(
                 'Unrecognised field name at end of "{}"'.format(k[: self.pos])
@@ -111,6 +111,6 @@ class KeySpecParser:
         if match is None:
             raise KeyError(
                 "Cannot find name or list subscript at start of {!r}".format(
-                    key[self.current_position:]
+                    key[self.current_position :]
                 )
             )

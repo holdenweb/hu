@@ -44,10 +44,11 @@ class ObjectDict(dict):
         if arg is self.sentinel:  # Called without args
             arg = {}
 
-        # Allows the underlying dict class to handle the arg as it usually would
+        # Allows the underlying dict class to handle the arg
+        # as it usually would
         super(ObjectDict, self).__init__(arg)
 
-        for (k, v) in self.items():
+        for k, v in self.items():
             self[k] = ObjectDict(v)
 
     def __delattr__(self, name):
