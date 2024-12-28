@@ -27,11 +27,9 @@ class DottedDict:
         except ValueError:
             raise KeyError("Non-integer list subscript")
         except IndexError:
-            raise KeyError(f'Invalid list index at end of "{k[: self.pos]}"')
+            raise KeyError(f'Invalid list index in "{k[: self.pos]}"')
         except KeyError:
-            raise KeyError(
-                'Unrecognised field name at end of "{}"'.format(k[: self.pos])
-            )
+            raise KeyError(f'Unrecognised field name in "{k[: self.pos]}"')
 
     def __getitem__(self, key):
         """

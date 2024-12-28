@@ -1,5 +1,4 @@
 import pytest
-
 from hu import DottedDict
 
 
@@ -19,7 +18,14 @@ def test_subscripts(dd):
 
 
 def test_fragments(dd):
-    assert list(dd._parse_path_key_spec("ab.cd[2][-1].ef.ij")) == ["ab", "cd", 2, -1, "ef", "ij"]
+    assert list(dd._parse_path_key_spec("ab.cd[2][-1].ef.ij")) == [
+        "ab",
+        "cd",
+        2,
+        -1,
+        "ef",
+        "ij",
+    ]
     assert list(dd._parse_path_key_spec("ab.cd[2].banana.ef.ij")) == [
         "ab",
         "cd",
@@ -46,7 +52,7 @@ def test_deletion(dd):
 def test_does_not_recursively_create_missing_structures():
     dd = DottedDict({"first": {"second": [{}, {}, {"third": "bingo"}]}})
     with pytest.raises(KeyError):
-        dd['missing.element'] = None
+        dd["missing.element"] = None
 
 
 def test_name_patterns(dd):

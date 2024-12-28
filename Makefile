@@ -22,9 +22,8 @@ tox-test:
 build:
 	python build_hu.py
 
-style_check:
+style-check:
 	poetry run flake8 src && echo flake8 done
-	poetry run pycodestyle src && echo pycodestyle done
 
 watch-test:
 	@make test --silent || exit 0
