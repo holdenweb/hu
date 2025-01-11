@@ -1,6 +1,6 @@
 # hu
 
-[![CircleCI](https://circleci.com/gh/holdenweb/hu.svg?style=svg)](https://circleci.com/gh/holdenweb/hu "Build Status")
+![Latest merge](https://github.com/holdenweb/hu/actions/workflows/lint.yml/badge.svg?branch=main)
 [![Dependabot Status](https://flat.badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot)](https://dependabot.com "Something something")
 
 Helpful utilities for open source developers
