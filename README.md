@@ -1,6 +1,6 @@
 # hu
 
-![Latest merge](https://github.com/holdenweb/hu/actions/workflows/main.yml/badge.svg)[![Dependabot Status](https://flat.badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot)](https://dependabot.com "Something something")
+![Latest merge](https://github.com/holdenweb/hu/actions/workflows/lint.yml/badge.svg)[![Dependabot Status](https://flat.badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot)](https://dependabot.com "Something something")
 
 Helpful utilities for open source developers
 
