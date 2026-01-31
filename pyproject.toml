@@ -1,27 +1,35 @@
-[tool.poetry]
+[project]
 name = "hu"
-version = "1.0.0-alpha.0"
+version = "1.0.1a1"
 description = "Helpful utility software for open source programmers"
-authors = ["Steve Holden <steve@holdenweb.com>"]
+authors = [{ name = "Steve Holden", email = "steve@holdenweb.com" }]
+requires-python = "~=3.9"
 
-packages = [
-    { include = "hu", from = "src" },
+[dependency-groups]
+dev = [
+    "tox~=3.25",
+    "flake8>=5.0.4,<6",
+    "pytest~=7.0",
+    "pytest-cov~=3.0",
+    "watchdog>=2.1.7,<3",
+    "coverage>=6.4.1,<7",
+    "setuptools>=75.6.0,<76",
+    "ruff>=0.8.4,<0.9",
+    "black>=24.10.0,<25",
 ]
 
-[tool.poetry.dependencies]
-python = "^3.9 || ^3.10 || ^3.11 || ^3.12 || ^3.13"
+[tool.hatch.build.targets.sdist]
+include = ["src/hu"]
 
-[tool.poetry.group.dev.dependencies]
-tox = "^3.25"
-flake8 = "^5.0.4"
-pytest = "^7.0"
-pytest-cov = "^3.0"
-watchdog = "^2.1.7"
-coverage = "^6.4.1"
-setuptools = "^75.6.0"
-ruff = "^0.8.4"
-black = "^24.10.0"
+[tool.hatch.build.targets.wheel]
+include = ["src/hu"]
+
+#[tool.hatch.build.targets.wheel.sources]
+"src/hu" = "hu"
+
+[tool.uv.workspace]
+members = ["textual_forms"]
 
 [build-system]
-requires = ["poetry_core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
