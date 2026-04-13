@@ -9,7 +9,7 @@ requires-python = "~=3.9"
 dev = [
     "tox~=3.25",
     "flake8>=5.0.4,<6",
-    "pytest~=7.0",
+    "pytest>=7,<9",
     "pytest-cov~=3.0",
     "watchdog>=2.1.7,<3",
     "coverage>=6.4.1,<7",
