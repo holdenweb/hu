@@ -55,7 +55,7 @@ class ObjectDict(dict):
         try:
             del self[name]
         except KeyError:
-            return AttributeError(repr(name))
+            raise AttributeError(repr(name))
 
     def __getattr__(self, name: str):
         try:

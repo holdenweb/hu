@@ -66,7 +66,7 @@ class DottedDict:
         for nk in fs:
             v = v[k]
             k = nk
-        del v[nk]
+        del v[k]
 
     def _parse_path_key_spec(self, key):
         parser = KeySpecParser()

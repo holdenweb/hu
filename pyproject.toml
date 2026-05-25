@@ -3,7 +3,7 @@ name = "hu"
 version = "1.0.1a1"
 description = "Helpful utility software for open source programmers"
 authors = [{ name = "Steve Holden", email = "steve@holdenweb.com" }]
-requires-python = "~=3.9"
+requires-python = ">=3.9.0, <4.0"
 
 [dependency-groups]
 dev = [
