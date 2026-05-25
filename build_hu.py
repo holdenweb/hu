@@ -18,7 +18,7 @@ def run_cmd(arg_list):
 #
 # Get version to be released from poetry and parse
 #
-p_version = run_cmd(["poetry", "version"]).decode("ascii")
+p_version = run_cmd(["uv", "version"]).decode("ascii")
 name, release_version = p_version.strip().split()
 rv = semver.VersionInfo.parse(release_version)
 if rv.prerelease:
@@ -55,6 +55,6 @@ __version__ = "{rv}"
 """
     )
 run_cmd(f"git add src/{name}/_version.py".split())
-run_cmd("poetry build".split())
+run_cmd("uv build".split())
 run_cmd(["git", "commit", "-m", f"Auto-build of {release_tag}"])
 run_cmd(["git", "tag", release_tag])
