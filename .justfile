@@ -19,14 +19,10 @@ test:
     uv run pytest -v
 
 tox-test:
-    tox -q
+    uv run tox -q
 
 build:
-    python build_hu.py
+    uv build
 
 style-check:
-    poetry run flake8 src && echo flake8 done
-
-watch-test:
-    @make test --silent || exit 0
-    @poetry run watchmedo shell-command --patterns="*.py" --recursive --drop --command="make test --silent" .
+    uv run flake8 src && echo flake8 done

@@ -30,9 +30,6 @@ include = ["src/hu"]
 #[tool.hatch.build.targets.wheel.sources]
 "src/hu" = "hu"
 
-[tool.uv.workspace]
-members = ["textual_forms"]
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
