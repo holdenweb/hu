@@ -1,6 +1,5 @@
 import inspect
-
-NoneType = type(None)
+from types import NoneType
 
 
 class ObjectDict(dict):

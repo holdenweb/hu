@@ -1,9 +1,12 @@
 # hu
 
-![Latest merge](https://github.com/holdenweb/hu/actions/workflows/lint.yml/badge.svg?branch=main)
-[![Dependabot Status](https://flat.badgen.net/dependabot/thepracticaldev/dev.to?icon=dependabot)](https://dependabot.com "Something something")
+![Latest merge](https://github.com/holdenweb/hu/actions/workflows/lint.yaml/badge.svg?branch=main)
 
 Helpful utilities for open source developers
+
+## Installation
+
+    uv add hu      # or: pip install hu
 
 ### hu.object_dict
 

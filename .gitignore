@@ -125,3 +125,6 @@ dmypy.json
 
 # WingPro project files
 *.wp?
+
+# macOS
+.DS_Store

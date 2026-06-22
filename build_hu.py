@@ -1,4 +1,5 @@
 ""
+
 import subprocess
 import sys
 
@@ -16,15 +17,10 @@ def run_cmd(arg_list):
 
 
 #
-# Get version to be released from poetry and parse
+# Get version to be released (hand-edited in pyproject.toml) and parse it
 #
-p_version = run_cmd(["uv", "version"]).decode("ascii")
-name, release_version = p_version.strip().split()
+release_version = run_cmd(["uv", "version", "--short"]).decode("ascii").strip()
 rv = semver.VersionInfo.parse(release_version)
-if rv.prerelease:
-    stage = tuple(rv.prerelease.split("."))
-else:
-    stage = None
 release_tag = f"v{rv}"
 
 #
@@ -44,17 +40,11 @@ gv = semver.VersionInfo.parse(tag[1:])
 if gv >= rv:
     sys.exit("Release version {} does not move forward from {}".format(rv, gv))
 
-with open(f"src/{name}/_version.py", "w") as v_file:
-    v_file.write(
-        f"""\
 #
-# Created automatically when registering a new version
-# Edits made here will be lost when build.py is re-run.
+# The version lives only in pyproject.toml and is exposed at runtime via
+# importlib.metadata (see src/hu/__init__.py), so there is no generated
+# file to write or commit here -- just build the distributions and tag the
+# already-committed version bump.
 #
-__version__ = "{rv}"
-"""
-    )
-run_cmd(f"git add src/{name}/_version.py".split())
 run_cmd("uv build".split())
-run_cmd(["git", "commit", "-m", f"Auto-build of {release_tag}"])
 run_cmd(["git", "tag", release_tag])

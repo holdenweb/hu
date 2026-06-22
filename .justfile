@@ -1,5 +1,3 @@
-export PYTHONPATH := "src"
-
 clean:
     find src tests -name __pycache__ -exec rm -r {} \; -prune
 
@@ -25,4 +23,4 @@ build:
     uv build
 
 style-check:
-    uv run flake8 src && echo flake8 done
+    uv run ruff check src
