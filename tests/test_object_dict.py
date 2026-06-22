@@ -1,4 +1,5 @@
 import pytest
+
 from hu import ObjectDict
 
 NoneType = type(None)
@@ -121,6 +122,15 @@ def test_item_deletion():
     #
     with pytest.raises(AttributeError):
         del od.a.b.nosuch
+
+
+def test_delattr_missing_attribute_raises():
+    # Regression guard: __delattr__ must *raise* AttributeError for a missing
+    # attribute, not merely construct and return one (which silently does
+    # nothing).
+    od = ObjectDict({"present": 1})
+    with pytest.raises(AttributeError):
+        del od.absent
 
 
 if __name__ == "__main__":

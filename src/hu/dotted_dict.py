@@ -21,15 +21,15 @@ class DottedDict:
     def __init__(self, d):
         self._d = d
 
-    def _apply_key(self, o, k):
+    def _apply_key(self, o, fragment, key, position):
         try:
-            return o[k]
+            return o[fragment]
         except ValueError:
             raise KeyError("Non-integer list subscript")
         except IndexError:
-            raise KeyError(f'Invalid list index in "{k[: self.pos]}"')
+            raise KeyError(f'Invalid list index in "{key[:position]}"')
         except KeyError:
-            raise KeyError(f'Unrecognised field name in "{k[: self.pos]}"')
+            raise KeyError(f'Unrecognised field name in "{key[:position]}"')
 
     def __getitem__(self, key):
         """
@@ -37,8 +37,8 @@ class DottedDict:
         data structure using key as path specifier.
         """
         o = self._d
-        for k in self._parse_path_key_spec(key):
-            o = self._apply_key(o, k)
+        for position, fragment in self._parse_path_key_spec(key):
+            o = self._apply_key(o, fragment, key, position)
         return o
 
     def __setitem__(self, key, value):
@@ -50,8 +50,8 @@ class DottedDict:
         """
         v = self._d
         fs = self._parse_path_key_spec(key)
-        k = next(fs)
-        for nk in fs:
+        _, k = next(fs)
+        for _, nk in fs:
             v = v[k]
             k = nk
         v[k] = value
@@ -62,17 +62,21 @@ class DottedDict:
         """
         v = self._d
         fs = self._parse_path_key_spec(key)
-        k = next(fs)
-        for nk in fs:
+        _, k = next(fs)
+        for _, nk in fs:
             v = v[k]
             k = nk
         del v[k]
 
     def _parse_path_key_spec(self, key):
-        parser = KeySpecParser()
-        for position, fragment in parser.parse(key):
-            self.pos = position
-            yield fragment
+        """
+        Yield (position, fragment) pairs for each step of the path key.
+
+        position is the offset into key just past the fragment; it lets the
+        caller quote the portion of the path consumed so far when reporting
+        an error, without relying on shared parser state.
+        """
+        yield from KeySpecParser().parse(key)
 
 
 class KeySpecParser:
