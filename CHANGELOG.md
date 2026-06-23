@@ -30,6 +30,9 @@ change, so the next stable release should be **2.0.0** rather than 1.0.1.
 
 ### Added
 
+- `.path` accessor on `ObjectDict`/`ObjectList` for path-string access
+  (`obj.path["a.b[2].c"]`, with `get`, set, delete and `in`) over the same lazy
+  data as attribute access.
 - `ObjectDict.to_dict()` returns a plain, detached `dict` (e.g. for
   `json.dumps`).
 - `ObjectList`, a lazy list view that wraps elements on access and writes
@@ -45,6 +48,8 @@ change, so the next stable release should be **2.0.0** rather than 1.0.1.
   changes). Keys that clash with dict method names (`items`, `keys`, `get`, …)
   are now reachable as attributes, and mutations made through item assignment,
   `update`-style edits or list mutation stay consistent with attribute access.
+- `DottedDict` rebuilt as the path facade of the shared lazy core; lookups now
+  return wrapped values supporting attribute access (`dd["a.b"].c`).
 - `DottedDict` error messages now quote the offending path, and the path parser
   no longer relies on shared mutable state between the generator and its
   consumer.
