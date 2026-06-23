@@ -36,6 +36,19 @@ with `json.dumps`):
 
     od = json.loads(text, object_hook=ObjectDict)
 
+The same data is also reachable by path string through the `.path` accessor —
+the path facade of the shared lazy core (see `hu.dotted_dict` below). Attribute
+and path access read and write the one underlying structure:
+
+    od = ObjectDict({"a": {"b": [1, 2]}})
+    assert od.path["a.b[1]"] == 2
+    od.path["a.b[1]"] = 9
+    assert od.a.b[1] == 9
+    assert od.path.get("a.missing", "fallback") == "fallback"
+
+(`path` and `to_dict` are reserved attribute names; a data key called `"path"`
+is reached with `od["path"]`.)
+
 > If your data has a known, fixed shape, prefer a `dataclass` or a
 > [pydantic](https://docs.pydantic.dev/) model: they give the same attribute
 > access *plus* static type checking and editor completion, which
@@ -45,11 +58,14 @@ with `json.dumps`):
 ### hu.dotted_dict
 
 `DottedDict` accesses dict/list structures using a single path string whose
-components are attribute names or integer indices.
+components are attribute names or integer indices. It is the path facade of the
+same lazy core as `ObjectDict` (equivalent to `ObjectDict(d).path`), so lookups
+return lazily wrapped values that support attribute access in turn.
 
     from hu import DottedDict
     dd = DottedDict({"first": {"second": [{}, {}, {"third": "bingo"}]}})
     assert dd["first.second[2].third"] == "bingo"
+    assert dd["first.second[2]"].third == "bingo"
 
 It also supports `get` (with an optional default) and membership tests; any path
 that does not resolve yields the default / `False` rather than raising:

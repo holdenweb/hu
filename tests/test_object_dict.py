@@ -212,5 +212,47 @@ def test_to_dict_is_detached_from_the_wrapper():
     assert snapshot["a"]["b"] == 1
 
 
+# --- path-string access via the shared lazy core ----------------------------
+
+
+def test_path_get_returns_wrapped_value():
+    od = ObjectDict({"a": {"b": [{"c": "deep"}]}})
+    assert od.path["a.b[0].c"] == "deep"
+    assert type(od.path["a.b[0]"]) is ObjectDict
+
+
+def test_path_and_attribute_access_share_backing():
+    od = ObjectDict({"a": {"b": 1}})
+    od.path["a.b"] = 2
+    assert od.a.b == 2
+    od.a.b = 3
+    assert od.path["a.b"] == 3
+
+
+def test_path_get_default_and_membership():
+    od = ObjectDict({"a": {"b": 1}})
+    assert od.path.get("a.b") == 1
+    assert od.path.get("a.x", "default") == "default"
+    assert "a.b" in od.path
+    assert "a.x" not in od.path
+
+
+def test_path_delete():
+    od = ObjectDict({"a": {"b": 1, "c": 2}})
+    del od.path["a.b"]
+    assert od.to_dict() == {"a": {"c": 2}}
+
+
+def test_path_on_object_list():
+    ol = ObjectList([{"a": 1}, {"a": 2}])
+    assert ol.path["[1].a"] == 2
+
+
+def test_path_is_reserved_but_key_reachable_by_subscript():
+    od = ObjectDict({"path": "/tmp"})
+    assert not isinstance(od.path, str)  # the .path accessor shadows the key
+    assert od["path"] == "/tmp"  # ...but the data is still reachable
+
+
 if __name__ == "__main__":
     pytest.main()

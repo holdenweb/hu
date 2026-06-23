@@ -1,5 +1,7 @@
 from collections.abc import MutableSequence
 
+from ._keyspec import KeySpecParser
+
 
 def _wrap(value):
     """
@@ -33,6 +35,66 @@ def _to_plain(value):
     if isinstance(value, list):
         return [_to_plain(v) for v in value]
     return value
+
+
+class _PathView:
+    """
+    Path-string access (e.g. ``"a.b[2].c"``) over a shared backing structure.
+
+    Returned by ``ObjectDict.path`` / ``ObjectList.path``. Reads, writes and
+    deletes all operate on the same underlying data the wrapper views, and
+    reads return lazily wrapped values.
+    """
+
+    def __init__(self, root):
+        self._root = root
+
+    def _apply(self, o, fragment, key, position):
+        try:
+            return o[fragment]
+        except IndexError:
+            raise KeyError(f'Invalid list index in "{key[:position]}"')
+        except KeyError:
+            raise KeyError(f'Unrecognised field name in "{key[:position]}"')
+        except (TypeError, ValueError):
+            raise KeyError(f'Cannot apply "{key[:position]}" to {type(o).__name__}')
+
+    def _resolve_parent(self, key):
+        """Return (container, last_fragment) for an assignment or deletion."""
+        fragments = KeySpecParser().parse(key)
+        prev_position, fragment = next(fragments)
+        parent = self._root
+        for position, next_fragment in fragments:
+            parent = self._apply(parent, fragment, key, prev_position)
+            prev_position, fragment = position, next_fragment
+        return parent, fragment
+
+    def __getitem__(self, key):
+        o = self._root
+        for position, fragment in KeySpecParser().parse(key):
+            o = self._apply(o, fragment, key, position)
+        return _wrap(o)
+
+    def __setitem__(self, key, value):
+        parent, last = self._resolve_parent(key)
+        parent[last] = _unwrap(value)
+
+    def __delitem__(self, key):
+        parent, last = self._resolve_parent(key)
+        del parent[last]
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key):
+        try:
+            self[key]
+        except KeyError:
+            return False
+        return True
 
 
 class ObjectDict:
@@ -123,6 +185,16 @@ class ObjectDict:
         """Return a plain, detached ``dict`` copy of the wrapped data."""
         return _to_plain(self)
 
+    @property
+    def path(self):
+        """
+        Path-string accessor over the same data, e.g. ``od.path["a.b[2].c"]``.
+
+        ``path`` (like ``to_dict``) is a reserved attribute name: a data key
+        called ``"path"`` is reached with subscripting, ``od["path"]``.
+        """
+        return _PathView(self._data)
+
 
 class ObjectList(MutableSequence):
     """
@@ -165,3 +237,8 @@ class ObjectList(MutableSequence):
     def to_list(self):
         """Return a plain, detached ``list`` copy of the wrapped data."""
         return _to_plain(self)
+
+    @property
+    def path(self):
+        """Path-string accessor over the same data, e.g. ``ol.path["[1].a"]``."""
+        return _PathView(self._data)

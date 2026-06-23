@@ -1,138 +1,45 @@
-import re
+from ._keyspec import KeySpecParser
+from .object_dict import _PathView
+
+__all__ = ["DottedDict", "KeySpecParser"]
 
 
 class DottedDict:
     """
-    String subscripts are interpreted as keys to be used at successive
-    layers of subscripting through the dictionaries and lists of a
-    JSON-like record.
+    Path-string access to nested dict/list structures.
 
-    Given a DottedDict with the following structure:
+    String subscripts are interpreted as keys to be used at successive layers
+    of subscripting through the dictionaries and lists of a JSON-like record::
 
         dd = DottedDict({"first": {"second": [{}, {}, {"third": "bingo"}]}})
+        assert dd["first.second[2].third"] == "bingo"
 
-    the value returned by the expression
-
-        dd['first.second[2].third']
-
-    should be the string 'bingo'.
+    DottedDict is the path facade of the shared lazy core: lookups return lazily
+    wrapped values, so a result supports attribute access in turn
+    (``dd["first.second[2]"].third``). ``ObjectDict(d).path`` offers the same
+    access over an attribute-first wrapper.
     """
 
     def __init__(self, d):
         self._d = d
 
-    def _apply_key(self, o, fragment, key, position):
-        try:
-            return o[fragment]
-        except IndexError:
-            raise KeyError(f'Invalid list index in "{key[:position]}"')
-        except KeyError:
-            raise KeyError(f'Unrecognised field name in "{key[:position]}"')
-        except (TypeError, ValueError):
-            raise KeyError(f'Cannot apply "{key[:position]}" to {type(o).__name__}')
+    def _view(self):
+        return _PathView(self._d)
 
     def __getitem__(self, key):
-        """
-        Returns the result of walking into the nested
-        data structure using key as path specifier.
-        """
-        o = self._d
-        for position, fragment in self._parse_path_key_spec(key):
-            o = self._apply_key(o, fragment, key, position)
-        return o
+        return self._view()[key]
 
     def __setitem__(self, key, value):
-        """
-        Set the nested element located at the specified path key
-
-        Currently handles only dicts.
-        Does not recursively create missing structures
-        """
-        v = self._d
-        fs = self._parse_path_key_spec(key)
-        _, k = next(fs)
-        for _, nk in fs:
-            v = v[k]
-            k = nk
-        v[k] = value
+        self._view()[key] = value
 
     def __delitem__(self, key):
-        """
-        Delete the nested element located at the path key.
-        """
-        v = self._d
-        fs = self._parse_path_key_spec(key)
-        _, k = next(fs)
-        for _, nk in fs:
-            v = v[k]
-            k = nk
-        del v[k]
+        del self._view()[key]
 
     def get(self, key, default=None):
-        """
-        Return the value at the path key, or default if it does not resolve.
-
-        Any path that fails to resolve -- a missing field, an out-of-range
-        index, or a fragment applied to the wrong type -- yields default.
-        """
-        try:
-            return self[key]
-        except KeyError:
-            return default
+        return self._view().get(key, default)
 
     def __contains__(self, key):
-        """Return True if the path key resolves to a value."""
-        try:
-            self[key]
-        except KeyError:
-            return False
-        return True
+        return key in self._view()
 
     def _parse_path_key_spec(self, key):
-        """
-        Yield (position, fragment) pairs for each step of the path key.
-
-        position is the offset into key just past the fragment; it lets the
-        caller quote the portion of the path consumed so far when reporting
-        an error, without relying on shared parser state.
-        """
         yield from KeySpecParser().parse(key)
-
-
-class KeySpecParser:
-    IDENTIFIER_PATTERN = r"(?P<name>[_A-Za-z][_A-Za-z0-9]*)"
-    SUBSCRIPT_PATTERN = r"\[(?P<index>-?\d*)\]"
-    HEAD_PATTERN = re.compile(rf"{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
-    TAIL_PATTERN = re.compile(rf"\.{IDENTIFIER_PATTERN}|{SUBSCRIPT_PATTERN}")
-
-    def parse(self, key):
-        self._initialise_parser()
-        end = len(key)
-        while self.current_position < end:
-            token = self._next_token_match(key)
-            yield self.current_position, token
-
-    def _initialise_parser(self):
-        self.current_position = 0
-        self.current_pattern = KeySpecParser.HEAD_PATTERN
-
-    def _next_token_match(self, key):
-        pattern_match = self.current_pattern.match(key, self.current_position)
-        self._raise_error_if_syntax_error(key, pattern_match)
-        self.current_position = pattern_match.end()
-        self.current_pattern = KeySpecParser.TAIL_PATTERN
-        return self._convert_to_token(pattern_match)
-
-    def _convert_to_token(self, pattern_match):
-        string, integer = pattern_match.groups()
-        if string:
-            return string
-        return int(integer)
-
-    def _raise_error_if_syntax_error(self, key, match):
-        if match is None:
-            raise KeyError(
-                "Cannot find name or list subscript at start of {!r}".format(
-                    key[self.current_position :]
-                )
-            )

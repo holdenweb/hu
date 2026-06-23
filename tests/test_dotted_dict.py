@@ -18,6 +18,12 @@ def test_subscripts(dd):
     assert dd["first.second[-1].third"] == "bingo"
 
 
+def test_path_result_supports_attribute_access(dd):
+    # Unification: lookups now return lazily wrapped values, so the result of a
+    # path lookup supports attribute access in turn.
+    assert dd["first.second[2]"].third == "bingo"
+
+
 def fragments(dd, key):
     return [fragment for _position, fragment in dd._parse_path_key_spec(key)]
 
