@@ -81,7 +81,7 @@ wheels = [
 
 [[package]]
 name = "hu"
-version = "1.0.1a2"
+version = "2.0.0a1"
 source = { editable = "." }
 
 [package.dev-dependencies]
