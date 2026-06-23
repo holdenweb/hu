@@ -17,7 +17,8 @@ def test_object_back_to_json():
     json_data = json.dumps(data)
     od_1 = json.loads(json_data, object_hook=ObjectDict)
     assert type(od_1) is ObjectDict
-    assert json.loads(json.dumps(od_1)) == data
+    # ObjectDict is not itself a dict, so round-trip via to_dict().
+    assert json.loads(json.dumps(od_1.to_dict())) == data
 
 
 if __name__ == "__main__":
