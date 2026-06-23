@@ -61,6 +61,26 @@ def test_unknown_field_name_raises_keyerror(dd):
     assert "first.nonesuch" in str(exc_info.value)
 
 
+def test_applying_field_to_a_list_raises_keyerror(dd):
+    # A type mismatch (attribute fragment applied to a list) is a "path does
+    # not resolve" condition, so it must be a KeyError, not a leaked TypeError.
+    with pytest.raises(KeyError):
+        dd["first.second.third"]
+
+
+def test_get_returns_value_or_default(dd):
+    assert dd.get("first.second[2].third") == "bingo"
+    assert dd.get("first.nonesuch") is None
+    assert dd.get("first.nonesuch", "fallback") == "fallback"
+    assert dd.get("first.second[99]", "fallback") == "fallback"
+
+
+def test_contains(dd):
+    assert "first.second[2].third" in dd
+    assert "first.nonesuch" not in dd
+    assert "first.second[99]" not in dd
+
+
 def test_deletion(dd):
     del dd["first.second[2].third"]
     assert dd["first.second"] == [{}, {}, {}]

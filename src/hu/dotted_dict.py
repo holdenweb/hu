@@ -24,12 +24,12 @@ class DottedDict:
     def _apply_key(self, o, fragment, key, position):
         try:
             return o[fragment]
-        except ValueError:
-            raise KeyError("Non-integer list subscript")
         except IndexError:
             raise KeyError(f'Invalid list index in "{key[:position]}"')
         except KeyError:
             raise KeyError(f'Unrecognised field name in "{key[:position]}"')
+        except (TypeError, ValueError):
+            raise KeyError(f'Cannot apply "{key[:position]}" to {type(o).__name__}')
 
     def __getitem__(self, key):
         """
@@ -67,6 +67,26 @@ class DottedDict:
             v = v[k]
             k = nk
         del v[k]
+
+    def get(self, key, default=None):
+        """
+        Return the value at the path key, or default if it does not resolve.
+
+        Any path that fails to resolve -- a missing field, an out-of-range
+        index, or a fragment applied to the wrong type -- yields default.
+        """
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key):
+        """Return True if the path key resolves to a value."""
+        try:
+            self[key]
+        except KeyError:
+            return False
+        return True
 
     def _parse_path_key_spec(self, key):
         """
