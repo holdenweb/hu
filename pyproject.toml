@@ -9,7 +9,7 @@ dependencies = []
 [dependency-groups]
 dev = [
     "tox>=4.0",
-    "pytest~=7.0",
+    "pytest>=7,<10",
     "pytest-cov~=3.0",
     "watchdog>=2.1.7,<3",
     "coverage>=6.4.1,<7",
